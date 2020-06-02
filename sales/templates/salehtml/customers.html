@@ -1,0 +1,49 @@
+{% extends 'starter.html' %}
+{% block title %}
+    <h1>客户信息展示</h1>
+{% endblock %}
+{% block content %}
+
+    <a href="{% url 'add_customer' %}" class="btn btn-primary" style="margin-top: 10px">添加客户</a>
+    <form class="form-inline pull-right" style="margin-top: 10px">
+        <select name="search_field" id="search_field" class="form-control">
+            <option value="qq">QQ</option>
+            <option value="name">姓名</option>
+        </select>
+      <div class="form-group">
+        <label for="keyword">搜索</label>
+        <input type="text" class="form-control" placeholder="搜索内容" name="keyword">
+      </div>
+      <button type="submit" class="btn btn-default">搜索</button>
+    </form>
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>QQ</th>
+                <th>姓名</th>
+                <th>性别</th>
+                <th>报名状态</th>
+                <th>转介绍字学员</th>
+                <th>操作</th>
+{#                <th>客户来源</th>#}
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer_obj in customer_objs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ customer_obj.qq }}</td>
+                    <td>{{ customer_obj.name }}</td>
+                    <td>{{ customer_obj.get_sex_display }}</td>
+                    <td>{{ customer_obj.status_show }}</td>
+                    <td>{{ customer_obj.introduce_from }}</td>
+                    <td><a href="{% url 'edit_customer' customer_obj.pk %}"><i class="fa fa-edit"></i></a></td>
+{#                    <td><a href=""><i class="fa fa-edit"></i></a></td>#}
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {{ page_html }}
+{% endblock %}
