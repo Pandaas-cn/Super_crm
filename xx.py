@@ -28,14 +28,16 @@ if __name__ == '__main__':
 
     django.setup()
     from sales import models
-    obj_list = []
-    for i in range(251):
-        d = {
-            'qq': str(11111 + i),
-            'name': f'dz技师{i}号',
-            'source': source_type[random.randint(0, 8)][0],
-            'course': course_choices[random.randint(0,1)][0],
-        }
-        obj = models.Customer(**d)
-        obj_list.append(obj)
-    models.Customer.objects.bulk_create(obj_list)
+    objs = models.UserInfo.objects.filter(classlist__campuses_id__in=('1,2'))
+    print(objs)
+    # obj_list = []
+    # for i in range(251):
+    #     d = {
+    #         'qq': str(11111 + i),
+    #         'name': f'dz技师{i}号',
+    #         'source': source_type[random.randint(0, 8)][0],
+    #         'course': course_choices[random.randint(0,1)][0],
+    #     }
+    #     obj = models.Customer(**d)
+    #     obj_list.append(obj)
+    # models.Customer.objects.bulk_create(obj_list)

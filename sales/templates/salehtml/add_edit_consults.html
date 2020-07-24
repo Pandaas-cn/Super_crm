@@ -1,0 +1,22 @@
+{% extends 'starter.html' %}
+{% block title %}
+    <h1>{{ pagetitle }}</h1>
+{% endblock %}
+{% block content %}
+
+<form class="form-horizontal" novalidate method="post">
+{% csrf_token %}
+{% for field in consult_form %}
+  <div class="form-group">
+    <label for="{{ field.id_for_label }}" class="col-sm-2 control-label">{{ field.label }}</label>
+    <div class="col-sm-6">
+      {{ field }}
+    </div>
+    <div class="col-sm-4">
+      <span style="color: #ff0000;font-size: 13px">{{ field.errors.0 }}</span>
+    </div>
+  </div>
+{% endfor %}
+<button class="btn btn-success">提交</button>
+</form>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'starter.html' %}
+{% load mytags %}
+{% block title %}
+{#    {% if tag == '1' %}#}
+{#    <h1>公共客户信息</h1>#}
+{#    {% elif tag == '2' %}#}
+{#    <h1>我的客户信息</h1>#}
+{#    {% endif %} #}
+{% endblock %}
+{% block content %}
+
+    <a href="{% url 'add_consult' %}" class="btn btn-primary" style="margin-top: 10px">添加跟进记录</a>
+    <div class="form-inline">
+        <form action="" class="pull-right">
+          <div class="form-group">
+        <select name="search_field" id="search_field" class="form-control">
+            <option value="customer__name">客户姓名</option>
+        </select>
+
+            <label for="keyword">搜索</label>
+            <input type="text" class="form-control" placeholder="搜索内容" name="keyword">
+
+          <button type="submit" class="btn btn-default">搜索</button>
+          </div>
+        </form>
+    </div>
+    <form action="" class="" method="post">
+        {% csrf_token %}
+        <div class="form-group pull-left">
+            <select name="action" id="action" class="form-control">
+                <option value="bulk_delete">批量删除</option>
+            </select>
+        </div>
+        <button class="btn btn-warning">GO</button>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" id="select_all" name="cids"> 选择
+                </th>
+                <th>序号</th>
+                <th>所咨询客户</th>
+                <th>跟进内容</th>
+                <th>跟进状态</th>
+                <th>跟进人</th>
+                <th>跟进日期</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for consult_obj in consult_list %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="cids" value="{{ consult_obj.pk }}">
+                    </td>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ consult_obj.customer }}</td>
+                    <td>{{ consult_obj.note }}</td>
+                    <td>{{ consult_obj.get_status_display }}</td>
+                    <td>{{ consult_obj.consultant }}</td>
+                    <td>{{ consult_obj.date|date:'Y-m-d H:i:s' }}</td>
+                    <td>
+{#                        <a href="{% url 'edit_customer' customer_obj.pk %}?next="><i class="fa fa-edit"></i></a>#}
+                        <a href="{% resole_url request 'enrollment_edit' consult_obj.pk %}" class="btn btn-sm btn-warning"><i class="fa fa-edit"></i></a>
+                        <a href="{% resole_url request 'delete_consult' consult_obj.pk %}" class="btn btn-sm btn-danger"><i class="fa fa-remove"></i></a>
+
+                    </td>
+                    
+{#                    <td><a href=""><i class="fa fa-edit"></i></a></td>#}
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    {{ page_html }}
+    </form>
+
+
+
+{% endblock %}

@@ -202,8 +202,9 @@ class ConsultRecord(models.Model):
     consultant = models.ForeignKey("UserInfo", verbose_name="跟进人", related_name='records',on_delete=models.CASCADE)
     date = models.DateTimeField("跟进日期", auto_now_add=True)
     delete_status = models.BooleanField(verbose_name='删除状态', default=False)
-    # def __str__(self):
 
+    def __str__(self):
+        return self.customer
 
 class Enrollment(models.Model):
     """

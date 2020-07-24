@@ -1,11 +1,7 @@
 {% extends 'starter.html' %}
 {% load mytags %}
 {% block title %}
-    {% if tag == '1' %}
-    <h1>公共客户信息</h1>
-    {% elif tag == '2' %}
-    <h1>我的客户信息</h1>
-    {% endif %} 
+<h1>课程记录</h1>
 {% endblock %}
 {% block content %}
 
@@ -29,14 +25,15 @@
         {% csrf_token %}
         <div class="form-group pull-left">
             <select name="action" id="action" class="form-control">
-                {% if tag == '1' %}
-                    <option value="reverse_gs">公户转私户</option>
-                {% else %}
-                    <option value="reverse_sg">私户转公户</option>
-                {% endif %}
+                <option value="muti_delete">批量删除</option>
+{#                {% if tag == '1' %}#}
+{#                    <option value="reverse_gs">公户转私户</option>#}
+{#                {% else %}#}
+{#                    <option value="reverse_sg">私户转公户</option>#}
+{#                {% endif %}#}
             </select>
         </div>
-        <button class="btn btn-warning">转换</button>
+        <button class="btn btn-warning">确认</button>
 
     <table class="table table-striped table-hover table-bordered">
         <thead>
@@ -45,38 +42,35 @@
                     <input type="checkbox" id="select_all" name="cids"> 选择
                 </th>
                 <th>序号</th>
-                <th>QQ</th>
-                <th>姓名</th>
-                <th>性别</th>
-                <th>报名状态</th>
-                <th>转介绍字学员</th>
-                <th>销售</th>
-                <th>跟进记录</th>
+                <th>节次</th>
+                <th>上课日期</th>
+                <th>本节课程标题</th>
+                <th>班级</th>
+                <th>讲师</th>
                 <th>操作</th>
 {#                <th>客户来源</th>#}
             </tr>
         </thead>
         <tbody>
-            {% for customer_obj in customer_objs %}
+            {% for course_obj in course_objs %}
                 <tr>
                     <td>
                         <input type="checkbox" name="cids" value="{{ customer_obj.pk }}">
                     </td>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ customer_obj.qq }}</td>
-                    <td>{{ customer_obj.name }}</td>
-                    <td>{{ customer_obj.get_sex_display }}</td>
-                    <td>{{ customer_obj.status_show }}</td>
-                    <td>{{ customer_obj.introduce_from|default:'暂无' }}</td>
-                    <td>{{ customer_obj.consultant|default:'暂无' }}</td>
+                    <td>{{ course_obj.day_num }}</td>
+                    <td>{{ course_obj.date | date:"Y-m-D" }}</td>
+                    <td>{{ course_obj.course_title }}</td>
+                    <td>{{ course_obj.re_class }}</td>
+                    <td>{{ course_obj.teacher|default:'暂无' }}</td>
                     <td>
-                        <a href="{% url 'consult_record' %}?cid={{ customer_obj.pk }}">查看详情</a>
+{#                        <a href="{% url 'consult_record' %}?cid={{ customer_obj.pk }}">查看详情</a>#}
                     </td>
                     <td>
 {#                        <a href="{% url 'edit_customer' customer_obj.pk %}?next="><i class="fa fa-edit"></i></a>#}
-                        <a href="{% resole_url request 'edit_customer' customer_obj.pk %}"><i class="fa fa-edit"></i></a>
+{#                        <a href="{% resole_url request 'edit_customer' customer_obj.pk %}"><i class="fa fa-edit"></i></a>#}
                     </td>
-                    
+
 {#                    <td><a href=""><i class="fa fa-edit"></i></a></td>#}
                 </tr>
             {% endfor %}

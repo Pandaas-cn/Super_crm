@@ -9,6 +9,15 @@ from django.utils.safestring import mark_safe
 class MyPagenation():
 
     def __init__(self, page, total_count, per_page_num, page_num_show, base_url, get_data=None):
+        """
+
+        :param page: 当前页
+        :param total_count: 数据总数量
+        :param per_page_num: 每页数据
+        :param page_num_show: 显示的页码数
+        :param base_url: 基本路径
+        :param get_data: 查询数据_Query_dict?
+        """
         self.base_url = base_url
         self.get_data = get_data
         per_page_num = settings.PER_PAGE_NUM  # 每页显示多少数据
