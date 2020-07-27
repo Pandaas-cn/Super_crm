@@ -120,6 +120,9 @@ class Customer(models.Model):
     def __str__(self):
         return self.name + ":" + self.qq
 
+    def get_course_display(self):
+        return ",".join([str(p) for p in self.class_list.all()])
+
     enroll_status_choices = (('signed', "已报名"),
                              ('unregistered', "未报名"),
                              ('studying', '学习中'),
@@ -179,6 +182,8 @@ class ClassList(models.Model):
     def __str__(self):
         return "{}{}({})".format(self.get_course_display(), self.semester, self.campuses)
 
+    def list_display(self):
+        return 'test_str'
 
 ############################下面的表以后再说#################################
 
@@ -281,7 +286,8 @@ class CourseRecord(models.Model):
     class Meta:
         unique_together = ('re_class', 'day_num')
 
-
+    def __str__(self):
+        return self.course_title + '\t' + str(self.day_num)
 class StudyRecord(models.Model):
     """
     学习记录
@@ -296,5 +302,9 @@ class StudyRecord(models.Model):
     course_record = models.ForeignKey('CourseRecord', verbose_name="某节课程",on_delete=models.CASCADE)
     student = models.ForeignKey('Customer', verbose_name="学员",on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.student.name + str(self.course_record.day_num)
+
     class Meta:
         unique_together = ('course_record', 'student')
+

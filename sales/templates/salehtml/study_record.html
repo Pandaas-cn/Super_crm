@@ -1,11 +1,11 @@
 {% extends 'starter.html' %}
 {% load mytags %}
 {% block title %}
-<h1>课程记录</h1>
+<h1>学习记录</h1>
 {% endblock %}
 {% block content %}
 
-    <a href="{% url 'add_customer' %}" class="btn btn-primary" style="margin-top: 10px">添加客户</a>
+    <a href="{% url 'add_customer' %}" class="btn btn-primary" style="margin-top: 10px">添加学习记录</a>
     <div class="form-inline">
         <form action="" class="pull-right">
           <div class="form-group">
@@ -15,7 +15,7 @@
         </select>
 
             <label for="keyword">搜索</label>
-            <input type="text" class="form-control" placeholder="搜索内容" name="keyword">
+            <input type="text" class="form-control" place holder="搜索内容" name="keyword">
 
           <button type="submit" class="btn btn-default">搜索</button>
           </div>
@@ -44,29 +44,29 @@
                     <input type="checkbox" id="select_all" name="cids"> 选择
                 </th>
                 <th>序号</th>
-                <th>节次</th>
-                <th>上课日期</th>
-                <th>本节课程标题</th>
-                <th>班级</th>
-                <th>讲师</th>
+                <th>考勤</th>
+                <th>本节成绩</th>
+                <th>作业批语</th>
+                <th>某节课程</th>
+                <th></th>
                 <th>学习记录</th>
                 <th>操作</th>
 {#                <th>客户来源</th>#}
             </tr>
         </thead>
         <tbody>
-            {% for course_obj in course_objs %}
+            {% for field in formset %}
                 <tr>
                     <td>
-                        <input type="checkbox" name="cids" value="{{ course_obj.pk }}">
+                        <input type="checkbox" name="cids" value="{{ field.pk }}">
                     </td>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ course_obj.day_num }}</td>
-                    <td>{{ course_obj.date | date:"Y-m-D" }}</td>
-                    <td>{{ course_obj.course_title }}</td>
-                    <td>{{ course_obj.re_class }}</td>
-                    <td>{{ course_obj.teacher|default:'暂无' }}</td>
-                    <td><a href="{% url 'study_record' course_obj.pk %}">查看学习记录</a></td>
+                    <td>{{ field.attendance }}</td>
+                    <td>{{ field.score }}</td>
+                    <td>{{ field.homework_note }}</td>
+                    <td>{{ field.course_record }}</td>
+                    <td>{{ field.student }}</td>
+
                     <td>
 {#                        <a href="{% url 'consult_record' %}?cid={{ customer_obj.pk }}">查看详情</a>#}
                     </td>

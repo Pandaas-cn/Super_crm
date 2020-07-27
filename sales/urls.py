@@ -29,5 +29,8 @@ urlpatterns = [
     path('enrollment/', views.Enrollment.as_view(), name='enrollment'),
     path('enrollment_add/', views.AddEditEnrollView.as_view(), name='enrollment_add'),
     path('enrollment_edit/<int:cid>', views.AddEditEnrollView.as_view(), name='enrollment_edit'),
-    path('course_record/', views.CourseRecordView.as_view(), name='course_record')
+    path('course_record/', views.CourseRecordView.as_view(), name='course_record'),
+    path('study_record/', views.StudyRecordView.as_view(), name='study_record'),
+    path('study_record/<int:course_record_id>', views.StudyRecordView.as_view(), name='study_record')
+
 ]

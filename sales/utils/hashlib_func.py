@@ -4,6 +4,7 @@
 # @SoftWare :PyCharm
 import hashlib
 
+
 def set_md5(values):
     """
     MD5加密
@@ -14,5 +15,6 @@ def set_md5(values):
     md5_value = hashlib.md5(secret_key)
     md5_value.update(values.encode('utf-8'))
     return md5_value.hexdigest()
+
 
 print(set_md5('123123'))

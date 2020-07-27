@@ -171,16 +171,16 @@ class CustomerView(View):
     def post(self, request, page=None):
         action = request.POST.get('action')
         if hasattr(self, action):
-            res = getattr(self, action)(request,)
+            res = getattr(self, action)(request, )
         if res is None:
             res = redirect(request.path)
         return res
 
     @staticmethod
-    def reverse_gs(request,):
+    def reverse_gs(request, ):
         cids = request.POST.getlist('cids')
         # import --->>> django.db.transaction
-        from django.db import transaction   # 导入事务
+        from django.db import transaction  # 导入事务
         with transaction.atomic():
             customers = models.Customer.objects.filter(pk__in=cids, consultant__isnull=True).select_for_update()
         if customers.count() != len(cids):
@@ -491,3 +491,55 @@ class CourseRecordView(View):
         }
 
         return render(request, 'salehtml/course_record.html', context)
+
+    def post(self, request):
+        action = request.POST.get('action')
+        cids = request.POST.getlist('cids')
+        print('action', action)
+        print('cids', cids)
+        if hasattr(self, action):
+            getattr(self, action)(request, cids)
+        return redirect(reverse('course_record'))
+
+    def bulk_create_record(self, request, cids):  # 批量生成记录
+        for cid in cids:
+            course_record_obj = models.CourseRecord.objects.filter(pk=cid).first()
+            print('course_record_obj', course_record_obj)
+            students = course_record_obj.re_class.customer_set.filter(status='studying')
+            objs_list = []
+            for student in students:
+                obj = models.StudyRecord(
+                    course_record_id=cid,
+                    student=student,
+                )
+                objs_list.append(obj)
+            models.StudyRecord.objects.bulk_create(objs_list)
+
+            # for student in students:
+            #     models.StudyRecord.objects.create(
+            #         course_record_id=cid,
+            #         student=student,
+            #     )
+
+
+
+from django.forms import modelformset_factory
+
+
+class StudyRecordModelForm(forms.ModelForm):
+    class Meta:
+        model = models.StudyRecord
+        fields = '__all__'
+
+
+class StudyRecordView(View):
+
+    def get(self, request, course_record_id):
+        query_set = models.StudyRecord.objects.filter(course_record_id=course_record_id)
+        formset = modelformset_factory(model=models.StudyRecord, form=StudyRecordModelForm)
+        formset = formset(queryset=query_set)
+        context = {
+            'formset': formset
+        }
+
+        return render(request, 'salehtml/study_record.html', context)

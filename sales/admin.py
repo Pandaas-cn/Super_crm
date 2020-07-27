@@ -9,7 +9,12 @@ class UserInfoAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
 
 
-admin.site.register(models.Customer)
+class CustomerInfoAdmin(admin.ModelAdmin):
+    list_display = ['qq', 'name', 'get_course_display']
+    # search_fields = ['class_list']
+
+
+admin.site.register(models.Customer, CustomerInfoAdmin)
 admin.site.register(models.ClassList)
 admin.site.register(models.UserInfo, UserInfoAdmin)
 admin.site.register(models.Campuses)
